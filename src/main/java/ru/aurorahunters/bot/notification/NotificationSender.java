@@ -12,20 +12,19 @@ public class NotificationSender {
 
     /**
      * Send a notification message to all bot users who subscribed to notifications.
+     *
      * @param message message which should be sent.
      */
     public void sendNotif(String message) throws SQLException, InterruptedException {
-        long currentChatId;
         for (Long chatId : new SessionsDAO().getSubscribersList()) {
-            currentChatId = chatId;
             AuroraBot notificationEvent = new AuroraBot();
-            SendMessage notificationMessage =
-                    new SendMessage(currentChatId, message).setParseMode(ParseMode.HTML);
+            SendMessage notificationMessage = new SendMessage(chatId.toString(), message);
+            notificationMessage.setParseMode(ParseMode.HTML);
             try {
                 notificationEvent.execute(notificationMessage);
             } catch (TelegramApiException e) {
                 out.println("Caught exception while send broadcast messages. StackTrace:\n" + e);
-                disableFailed(currentChatId);
+                disableFailed(chatId);
             }
             Thread.sleep(35);
         }

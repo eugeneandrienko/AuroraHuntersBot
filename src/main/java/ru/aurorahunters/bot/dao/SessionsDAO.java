@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import static java.lang.System.*;
 
+// TODO: After update Telegram API to V5.1.1 - chat ID should be stored in
+//  String data type, not in Long. Should fix that here and in database.
+
 public class SessionsDAO {
 
     /**
